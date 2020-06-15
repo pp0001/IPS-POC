@@ -1,0 +1,37 @@
+﻿{
+  "format_version": 1,
+  "imports": [
+    {
+     "target_table": "NS2_CONSULTANTS", 
+      "column_mappings" : {
+        "EMAIL":1,
+        "FIRSTNAME":2,
+        "LASTNAME": 3,
+        "SAPID": 4,
+        "DEPARTMENT" : 5,
+        "RESTRICTED" : 6
+     },
+     "import_settings" : {
+       "import_columns" : [ 
+          "EMAIL",
+          "FIRSTNAME",
+          "LASTNAME",
+          "SAPID",
+          "DEPARTMENT",
+          "RESTRICTED"
+        ]
+      },
+      "source_data": {
+        "data_type": "CSV",
+        "file_name": "Consultants.csv",
+        "has_header": true,
+        "no_data_import": false,
+        "delete_existing_foreign_data": false
+      },
+      "dialect": "HANA",
+      "type_config": {
+        "delimiter": ","
+      }
+    }
+  ]
+}

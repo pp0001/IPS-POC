@@ -1,0 +1,32 @@
+xs.appname: IPS_POC-srv
+
+management:
+  context-path: /admin
+  security:
+    enabled: true
+  endpoints.web.exposure.include: '*'
+
+logging.level.root: INFO
+
+
+spring:
+  profiles: 
+    active: dev
+  datasource:
+    url: jdbc:sap://localhost:30015?encrypt=true&validateCertificate=false&currentschema=0B50D6449D814128AD5B2EFB5A9F16A4
+    username: 0B50D6449D814128AD5B2EFB5A9F16A4_0I0VT5IFUPKB9MID5QPA2GYA0_RT
+    password: Wg8etX2mtlLnKdcRa7Bmg2ED7qtINRRvOF.5ruQUBghGLgKn57ZQbccLd-bRfnckvd4m41xLLEpFj7BzKfemPkYM-9OnCNTnChe1hAr4JV-qUIvi2jE41_W917pC-DM1
+    driverClassName: com.sap.db.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource   
+  
+---
+spring:
+  profiles: cloud
+  datasource:        # read the data source connection properties from VCAP_SERVICES. See manifest.yml for declaration of 'db_service_instance_name'.
+    url:             ${vcap.services.${db_service_instance_name}.credentials.url}
+    username:        ${vcap.services.${db_service_instance_name}.credentials.user}
+    password:        ${vcap.services.${db_service_instance_name}.credentials.password}
+    driverClassName: ${vcap.services.${db_service_instance_name}.credentials.driver}
+    type:            com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximumPoolSize: 10

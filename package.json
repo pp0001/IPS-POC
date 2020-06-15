@@ -5,9 +5,9 @@
     "repository": "<Add your repository here>",
     "license": "UNLICENSED",
     "dependencies": {
-        "@sap/cds": "^3.34.2",
+        "@sap/cds": "3.33.1",
         "express": "^4.17.1",
-        "@sap/hana-client": "^2.4.196"
+        "hdb": "^0.17.1"
     },
     "engines": {
         "node": "^10 || ^12"

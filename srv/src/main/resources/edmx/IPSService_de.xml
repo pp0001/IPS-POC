@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Include Alias="Capabilities" Namespace="Org.OData.Capabilities.V1"/>
+  </edmx:Reference>
   <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
     <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
   </edmx:Reference>
@@ -12,58 +15,192 @@
   <edmx:DataServices m:DataServiceVersion="2.0">
     <Schema Namespace="IPSService" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
       <EntityContainer Name="EntityContainer" m:IsDefaultEntityContainer="true">
-        <EntitySet Name="DeskToEmpMapping" EntityType="IPSService.DeskToEmpMapping"/>
-        <EntitySet Name="Desks" EntityType="IPSService.Desks"/>
-        <EntitySet Name="Employees" EntityType="IPSService.Employees"/>
+        <EntitySet Name="Building" EntityType="IPSService.Building"/>
+        <EntitySet Name="Consultant" EntityType="IPSService.Consultant"/>
+        <EntitySet Name="Desk" EntityType="IPSService.Desk"/>
+        <EntitySet Name="Usage" EntityType="IPSService.Usage"/>
+        <AssociationSet Name="Desk_building" Association="IPSService.Desk_building">
+          <End Role="Desk" EntitySet="Desk"/>
+          <End Role="Building" EntitySet="Building"/>
+        </AssociationSet>
+        <AssociationSet Name="Usage_consultant" Association="IPSService.Usage_consultant">
+          <End Role="Usage" EntitySet="Usage"/>
+          <End Role="Consultant" EntitySet="Consultant"/>
+        </AssociationSet>
+        <AssociationSet Name="Usage_desk" Association="IPSService.Usage_desk">
+          <End Role="Usage" EntitySet="Usage"/>
+          <End Role="Desk" EntitySet="Desk"/>
+        </AssociationSet>
       </EntityContainer>
-      <EntityType Name="DeskToEmpMapping">
+      <EntityType Name="Building">
+        <Key>
+          <PropertyRef Name="buildingID"/>
+        </Key>
+        <Property Name="buildingID" Type="Edm.String" MaxLength="5" Nullable="false"/>
+        <Property Name="buildingName" Type="Edm.String" MaxLength="200"/>
+        <Property Name="country" Type="Edm.String" MaxLength="20"/>
+        <Property Name="LocationID" Type="Edm.String" MaxLength="3"/>
+        <Property Name="LocationName" Type="Edm.String" MaxLength="20"/>
+        <Property Name="postalCode" Type="Edm.String"/>
+        <Property Name="street" Type="Edm.String" MaxLength="300"/>
+        <Property Name="longitude" Type="Edm.String"/>
+        <Property Name="latitude" Type="Edm.String"/>
+        <Property Name="geoLink" Type="Edm.String"/>
+        <Property Name="portalLink" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="Consultant">
+        <Key>
+          <PropertyRef Name="email"/>
+        </Key>
+        <Property Name="email" Type="Edm.String" MaxLength="35" Nullable="false"/>
+        <Property Name="firstName" Type="Edm.String" MaxLength="20"/>
+        <Property Name="lastName" Type="Edm.String" MaxLength="20"/>
+        <Property Name="SAPID" Type="Edm.String" MaxLength="7"/>
+        <Property Name="mobile" Type="Edm.Int32"/>
+        <Property Name="department" Type="Edm.String" MaxLength="50"/>
+        <Property Name="restricted" Type="Edm.Boolean"/>
+      </EntityType>
+      <EntityType Name="Desk">
+        <Key>
+          <PropertyRef Name="deskID"/>
+        </Key>
+        <Property Name="deskID" Type="Edm.String" MaxLength="15" Nullable="false"/>
+        <Property Name="deskNum" Type="Edm.Int32"/>
+        <NavigationProperty Name="building" Relationship="IPSService.Desk_building" FromRole="Desk" ToRole="Building"/>
+        <Property Name="floor" Type="Edm.Int32"/>
+        <Property Name="room" Type="Edm.String" MaxLength="10"/>
+        <Property Name="resource" Type="Edm.Int32"/>
+        <Property Name="isHotdesk" Type="Edm.Boolean"/>
+        <Property Name="nearWindow" Type="Edm.Boolean"/>
+        <Property Name="nearKitchin" Type="Edm.Boolean"/>
+        <Property Name="nearEntrance" Type="Edm.Boolean"/>
+        <Property Name="isLiftable" Type="Edm.Boolean"/>
+        <Property Name="monitorNum" Type="Edm.Int32"/>
+        <Property Name="building_buildingID" Type="Edm.String" MaxLength="5"/>
+      </EntityType>
+      <EntityType Name="Usage">
         <Key>
           <PropertyRef Name="ID"/>
         </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
         <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
         <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
         <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
         <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
-        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
-        <Property Name="deskId" Type="Edm.Int32"/>
-        <Property Name="empId" Type="Edm.Int32"/>
+        <NavigationProperty Name="consultant" Relationship="IPSService.Usage_consultant" FromRole="Usage" ToRole="Consultant"/>
+        <NavigationProperty Name="desk" Relationship="IPSService.Usage_desk" FromRole="Usage" ToRole="Desk"/>
+        <Property Name="occupiedFrom" Type="Edm.DateTimeOffset"/>
+        <Property Name="occupiedTo" Type="Edm.DateTimeOffset"/>
+        <Property Name="resource" Type="Edm.Int32"/>
+        <Property Name="consultant_email" Type="Edm.String" MaxLength="35"/>
+        <Property Name="desk_deskID" Type="Edm.String" MaxLength="15"/>
       </EntityType>
-      <EntityType Name="Desks">
-        <Key>
-          <PropertyRef Name="ID"/>
-        </Key>
-        <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
-        <Property Name="building" Type="Edm.String"/>
-        <Property Name="floor" Type="Edm.String"/>
-        <Property Name="number" Type="Edm.Int32"/>
-      </EntityType>
-      <EntityType Name="Employees">
-        <Key>
-          <PropertyRef Name="ID"/>
-        </Key>
-        <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
-        <Property Name="name" Type="Edm.String"/>
-        <Property Name="Inumber" Type="Edm.String"/>
-      </EntityType>
-      <Annotations Target="IPSService.DeskToEmpMapping/createdAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <Association Name="Desk_building">
+        <End Role="Desk" Type="IPSService.Desk" Multiplicity="*"/>
+        <End Role="Building" Type="IPSService.Building" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="Building">
+            <PropertyRef Name="buildingID"/>
+          </Principal>
+          <Dependent Role="Desk">
+            <PropertyRef Name="building_buildingID"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="Usage_consultant">
+        <End Role="Usage" Type="IPSService.Usage" Multiplicity="*"/>
+        <End Role="Consultant" Type="IPSService.Consultant" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="Consultant">
+            <PropertyRef Name="email"/>
+          </Principal>
+          <Dependent Role="Usage">
+            <PropertyRef Name="consultant_email"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="Usage_desk">
+        <End Role="Usage" Type="IPSService.Usage" Multiplicity="*"/>
+        <End Role="Desk" Type="IPSService.Desk" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="Desk">
+            <PropertyRef Name="deskID"/>
+          </Principal>
+          <Dependent Role="Usage">
+            <PropertyRef Name="desk_deskID"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Annotations Target="IPSService.EntityContainer/Building" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="IPSService.EntityContainer/Consultant" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="IPSService.EntityContainer/Desk" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="IPSService.Usage/createdAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Angelegt am"/>
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="Core.Immutable" Bool="true"/>
         <Annotation Term="UI.HiddenFilter" Bool="true"/>
       </Annotations>
-      <Annotations Target="IPSService.DeskToEmpMapping/createdBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <Annotations Target="IPSService.Usage/createdBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Angelegt von"/>
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="Core.Description" String="Die eindeutige ID eines Benutzers"/>
         <Annotation Term="Core.Immutable" Bool="true"/>
         <Annotation Term="UI.HiddenFilter" Bool="true"/>
       </Annotations>
-      <Annotations Target="IPSService.DeskToEmpMapping/modifiedAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <Annotations Target="IPSService.Usage/modifiedAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Geändert am"/>
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="UI.HiddenFilter" Bool="true"/>
       </Annotations>
-      <Annotations Target="IPSService.DeskToEmpMapping/modifiedBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <Annotations Target="IPSService.Usage/modifiedBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Geändert von"/>
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="Core.Description" String="Die eindeutige ID eines Benutzers"/>

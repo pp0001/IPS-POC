@@ -32,22 +32,241 @@
       ]
     },
     "IPSService": {
-      "@source": "srv/cat-service.cds",
+      "@source": "srv/ips-poc.cds",
       "kind": "service"
     },
-    "IPSService.DeskToEmpMapping": {
+    "IPSService.Building": {
       "kind": "entity",
-      "@cds.persistence.name": "IPSSERVICE_DESKTOEMPMAPPING",
+      "@Capabilities.DeleteRestrictions.Deletable": false,
+      "@Capabilities.InsertRestrictions.Insertable": false,
+      "@Capabilities.UpdateRestrictions.Updatable": false,
+      "@cds.persistence.name": "IPSSERVICE_BUILDING",
+      "@readonly": true,
       "query": {
         "SELECT": {
           "from": {
             "ref": [
-              "ips.poc.DeskToEmpMappings"
+              "ns2.Buildings"
             ]
           }
         }
       },
       "elements": {
+        "buildingID": {
+          "@cds.persistence.name": "BUILDINGID",
+          "key": true,
+          "type": "cds.String",
+          "length": 5
+        },
+        "buildingName": {
+          "@cds.persistence.name": "BUILDINGNAME",
+          "type": "cds.String",
+          "length": 200
+        },
+        "country": {
+          "@cds.persistence.name": "COUNTRY",
+          "type": "cds.String",
+          "length": 20
+        },
+        "LocationID": {
+          "@cds.persistence.name": "LOCATIONID",
+          "type": "cds.String",
+          "length": 3
+        },
+        "LocationName": {
+          "@cds.persistence.name": "LOCATIONNAME",
+          "type": "cds.String",
+          "length": 20
+        },
+        "postalCode": {
+          "@cds.persistence.name": "POSTALCODE",
+          "type": "cds.String"
+        },
+        "street": {
+          "@cds.persistence.name": "STREET",
+          "type": "cds.String",
+          "length": 300
+        },
+        "longitude": {
+          "@cds.persistence.name": "LONGITUDE",
+          "type": "cds.String"
+        },
+        "latitude": {
+          "@cds.persistence.name": "LATITUDE",
+          "type": "cds.String"
+        },
+        "geoLink": {
+          "@cds.persistence.name": "GEOLINK",
+          "type": "cds.String"
+        },
+        "portalLink": {
+          "@cds.persistence.name": "PORTALLINK",
+          "type": "cds.String"
+        }
+      },
+      "$syntax": "projection"
+    },
+    "IPSService.Consultant": {
+      "kind": "entity",
+      "@Capabilities.DeleteRestrictions.Deletable": false,
+      "@Capabilities.InsertRestrictions.Insertable": false,
+      "@Capabilities.UpdateRestrictions.Updatable": false,
+      "@cds.persistence.name": "IPSSERVICE_CONSULTANT",
+      "@readonly": true,
+      "query": {
+        "SELECT": {
+          "from": {
+            "ref": [
+              "ns2.Consultants"
+            ]
+          }
+        }
+      },
+      "elements": {
+        "email": {
+          "@cds.persistence.name": "EMAIL",
+          "key": true,
+          "type": "cds.String",
+          "length": 35
+        },
+        "firstName": {
+          "@cds.persistence.name": "FIRSTNAME",
+          "type": "cds.String",
+          "length": 20
+        },
+        "lastName": {
+          "@cds.persistence.name": "LASTNAME",
+          "type": "cds.String",
+          "length": 20
+        },
+        "SAPID": {
+          "@cds.persistence.name": "SAPID",
+          "type": "cds.String",
+          "length": 7
+        },
+        "mobile": {
+          "@cds.persistence.name": "MOBILE",
+          "type": "cds.Integer"
+        },
+        "department": {
+          "@cds.persistence.name": "DEPARTMENT",
+          "type": "cds.String",
+          "length": 50
+        },
+        "restricted": {
+          "@cds.persistence.name": "RESTRICTED",
+          "type": "cds.Boolean"
+        }
+      },
+      "$syntax": "projection"
+    },
+    "IPSService.Desk": {
+      "kind": "entity",
+      "@Capabilities.DeleteRestrictions.Deletable": false,
+      "@Capabilities.InsertRestrictions.Insertable": false,
+      "@Capabilities.UpdateRestrictions.Updatable": false,
+      "@cds.persistence.name": "IPSSERVICE_DESK",
+      "@readonly": true,
+      "query": {
+        "SELECT": {
+          "from": {
+            "ref": [
+              "ns2.Desks"
+            ]
+          }
+        }
+      },
+      "elements": {
+        "deskID": {
+          "@cds.persistence.name": "DESKID",
+          "key": true,
+          "type": "cds.String",
+          "length": 15
+        },
+        "deskNum": {
+          "@cds.persistence.name": "DESKNUM",
+          "type": "cds.Integer"
+        },
+        "building": {
+          "@cds.persistence.name": "BUILDING",
+          "type": "cds.Association",
+          "target": "IPSService.Building",
+          "keys": [
+            {
+              "ref": [
+                "buildingID"
+              ],
+              "$generatedFieldName": "building_buildingID"
+            }
+          ]
+        },
+        "floor": {
+          "@cds.persistence.name": "FLOOR",
+          "type": "cds.Integer"
+        },
+        "room": {
+          "@cds.persistence.name": "ROOM",
+          "type": "cds.String",
+          "length": 10
+        },
+        "resource": {
+          "@cds.persistence.name": "RESOURCE",
+          "type": "cds.Integer",
+          "default": {
+            "val": 1
+          }
+        },
+        "isHotdesk": {
+          "@cds.persistence.name": "ISHOTDESK",
+          "type": "cds.Boolean"
+        },
+        "nearWindow": {
+          "@cds.persistence.name": "NEARWINDOW",
+          "type": "cds.Boolean"
+        },
+        "nearKitchin": {
+          "@cds.persistence.name": "NEARKITCHIN",
+          "type": "cds.Boolean"
+        },
+        "nearEntrance": {
+          "@cds.persistence.name": "NEARENTRANCE",
+          "type": "cds.Boolean"
+        },
+        "isLiftable": {
+          "@cds.persistence.name": "ISLIFTABLE",
+          "type": "cds.Boolean"
+        },
+        "monitorNum": {
+          "@cds.persistence.name": "MONITORNUM",
+          "type": "cds.Integer"
+        },
+        "building_buildingID": {
+          "@cds.persistence.name": "BUILDING_BUILDINGID",
+          "@odata.foreignKey4": "building",
+          "type": "cds.String",
+          "length": 5
+        }
+      },
+      "$syntax": "projection"
+    },
+    "IPSService.Usage": {
+      "kind": "entity",
+      "@cds.persistence.name": "IPSSERVICE_USAGE",
+      "query": {
+        "SELECT": {
+          "from": {
+            "ref": [
+              "ns2.Usages"
+            ]
+          }
+        }
+      },
+      "elements": {
+        "ID": {
+          "@cds.persistence.name": "ID",
+          "key": true,
+          "type": "cds.UUID"
+        },
         "createdAt": {
           "@Common.Label": "{i18n>CreatedAt}",
           "@Core.Computed": true,
@@ -116,80 +335,58 @@
           "type": "cds.String",
           "length": 255
         },
-        "ID": {
-          "@cds.persistence.name": "ID",
-          "key": true,
-          "type": "cds.UUID"
+        "consultant": {
+          "@cds.persistence.name": "CONSULTANT",
+          "type": "cds.Association",
+          "target": "IPSService.Consultant",
+          "keys": [
+            {
+              "ref": [
+                "email"
+              ],
+              "$generatedFieldName": "consultant_email"
+            }
+          ]
         },
-        "deskId": {
-          "@cds.persistence.name": "DESKID",
-          "type": "cds.Integer"
+        "desk": {
+          "@cds.persistence.name": "DESK",
+          "type": "cds.Association",
+          "target": "IPSService.Desk",
+          "keys": [
+            {
+              "ref": [
+                "deskID"
+              ],
+              "$generatedFieldName": "desk_deskID"
+            }
+          ]
         },
-        "empId": {
-          "@cds.persistence.name": "EMPID",
-          "type": "cds.Integer"
-        }
-      },
-      "$syntax": "projection"
-    },
-    "IPSService.Desks": {
-      "kind": "entity",
-      "@cds.persistence.name": "IPSSERVICE_DESKS",
-      "query": {
-        "SELECT": {
-          "from": {
-            "ref": [
-              "ips.poc.Desks"
-            ]
+        "occupiedFrom": {
+          "@cds.persistence.name": "OCCUPIEDFROM",
+          "type": "cds.DateTime"
+        },
+        "occupiedTo": {
+          "@cds.persistence.name": "OCCUPIEDTO",
+          "type": "cds.DateTime"
+        },
+        "resource": {
+          "@cds.persistence.name": "RESOURCE",
+          "type": "cds.Integer",
+          "default": {
+            "val": 1
           }
-        }
-      },
-      "elements": {
-        "ID": {
-          "@cds.persistence.name": "ID",
-          "key": true,
-          "type": "cds.Integer"
         },
-        "building": {
-          "@cds.persistence.name": "BUILDING",
-          "type": "cds.String"
+        "consultant_email": {
+          "@cds.persistence.name": "CONSULTANT_EMAIL",
+          "@odata.foreignKey4": "consultant",
+          "type": "cds.String",
+          "length": 35
         },
-        "floor": {
-          "@cds.persistence.name": "FLOOR",
-          "type": "cds.String"
-        },
-        "number": {
-          "@cds.persistence.name": "NUMBER",
-          "type": "cds.Integer"
-        }
-      },
-      "$syntax": "projection"
-    },
-    "IPSService.Employees": {
-      "kind": "entity",
-      "@cds.persistence.name": "IPSSERVICE_EMPLOYEES",
-      "query": {
-        "SELECT": {
-          "from": {
-            "ref": [
-              "ips.poc.Employees"
-            ]
-          }
-        }
-      },
-      "elements": {
-        "ID": {
-          "@cds.persistence.name": "ID",
-          "key": true,
-          "type": "cds.Integer"
-        },
-        "name": {
-          "@cds.persistence.name": "NAME",
-          "type": "cds.String"
-        },
-        "Inumber": {
-          "@cds.persistence.name": "INUMBER",
-          "type": "cds.String"
+        "desk_deskID": {
+          "@cds.persistence.name": "DESK_DESKID",
+          "@odata.foreignKey4": "desk",
+          "type": "cds.String",
+          "length": 15
         }
       },
       "$syntax": "projection"
@@ -304,29 +501,128 @@
           "type": "cds.String",
           "length": 255
         },
-        "ID": {
-          "@cds.persistence.name": "ID",
+        "GUID": {
+          "@cds.persistence.name": "GUID",
           "key": true,
           "type": "cds.UUID"
         },
-        "deskId": {
-          "@cds.persistence.name": "DESKID",
-          "type": "cds.Integer"
+        "desk": {
+          "@cds.persistence.name": "DESK",
+          "type": "cds.Association",
+          "target": "ips.poc.Desks",
+          "keys": [
+            {
+              "ref": [
+                "GUID"
+              ],
+              "$generatedFieldName": "desk_GUID"
+            }
+          ]
         },
-        "empId": {
-          "@cds.persistence.name": "EMPID",
-          "type": "cds.Integer"
+        "employee": {
+          "@cds.persistence.name": "EMPLOYEE",
+          "type": "cds.Association",
+          "target": "ips.poc.Employees",
+          "keys": [
+            {
+              "ref": [
+                "GUID"
+              ],
+              "$generatedFieldName": "employee_GUID"
+            }
+          ]
+        },
+        "desk_GUID": {
+          "@cds.persistence.name": "DESK_GUID",
+          "@odata.foreignKey4": "desk",
+          "type": "cds.UUID"
+        },
+        "employee_GUID": {
+          "@cds.persistence.name": "EMPLOYEE_GUID",
+          "@odata.foreignKey4": "employee",
+          "type": "cds.UUID"
         }
       }
     },
     "ips.poc.Desks": {
       "kind": "entity",
       "@cds.persistence.name": "IPS_POC_DESKS",
+      "includes": [
+        "managed"
+      ],
       "elements": {
-        "ID": {
-          "@cds.persistence.name": "ID",
+        "createdAt": {
+          "@Common.Label": "{i18n>CreatedAt}",
+          "@Core.Computed": true,
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.persistence.name": "CREATEDAT",
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@Common.Label": "{i18n>CreatedBy}",
+          "@Core.Computed": true,
+          "@Core.Description": "{i18n>UserID.Description}",
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.persistence.name": "CREATEDBY",
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "@readonly": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@Common.Label": "{i18n>ChangedAt}",
+          "@Core.Computed": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@cds.persistence.name": "MODIFIEDAT",
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@Common.Label": "{i18n>ChangedBy}",
+          "@Core.Computed": true,
+          "@Core.Description": "{i18n>UserID.Description}",
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@cds.persistence.name": "MODIFIEDBY",
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "@readonly": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "GUID": {
+          "@cds.persistence.name": "GUID",
           "key": true,
-          "type": "cds.Integer"
+          "type": "cds.UUID"
         },
         "building": {
           "@cds.persistence.name": "BUILDING",
@@ -345,11 +641,82 @@
     "ips.poc.Employees": {
       "kind": "entity",
       "@cds.persistence.name": "IPS_POC_EMPLOYEES",
+      "includes": [
+        "managed"
+      ],
       "elements": {
-        "ID": {
-          "@cds.persistence.name": "ID",
+        "createdAt": {
+          "@Common.Label": "{i18n>CreatedAt}",
+          "@Core.Computed": true,
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.persistence.name": "CREATEDAT",
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@Common.Label": "{i18n>CreatedBy}",
+          "@Core.Computed": true,
+          "@Core.Description": "{i18n>UserID.Description}",
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.persistence.name": "CREATEDBY",
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "@readonly": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@Common.Label": "{i18n>ChangedAt}",
+          "@Core.Computed": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@cds.persistence.name": "MODIFIEDAT",
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@Common.Label": "{i18n>ChangedBy}",
+          "@Core.Computed": true,
+          "@Core.Description": "{i18n>UserID.Description}",
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@cds.persistence.name": "MODIFIEDBY",
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "@readonly": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "GUID": {
+          "@cds.persistence.name": "GUID",
           "key": true,
-          "type": "cds.Integer"
+          "type": "cds.UUID"
         },
         "name": {
           "@cds.persistence.name": "NAME",
@@ -365,9 +732,7 @@
       "kind": "entity",
       "@UI.Identification": [
         {
-          "Value": {
-            "=": "name"
-          }
+          "=": "name"
         }
       ],
       "@cds.autoexpose": true,
@@ -511,9 +876,7 @@
       "kind": "entity",
       "@UI.Identification": [
         {
-          "Value": {
-            "=": "name"
-          }
+          "=": "name"
         }
       ],
       "@cds.autoexpose": true,
@@ -663,9 +1026,7 @@
       "kind": "entity",
       "@UI.Identification": [
         {
-          "Value": {
-            "=": "name"
-          }
+          "=": "name"
         }
       ],
       "@cds.autoexpose": true,
@@ -880,6 +1241,314 @@
       },
       "$syntax": "aspect"
     },
+    "ns2.Buildings": {
+      "kind": "entity",
+      "@cds.persistence.name": "NS2_BUILDINGS",
+      "elements": {
+        "buildingID": {
+          "@cds.persistence.name": "BUILDINGID",
+          "key": true,
+          "type": "cds.String",
+          "length": 5
+        },
+        "buildingName": {
+          "@cds.persistence.name": "BUILDINGNAME",
+          "type": "cds.String",
+          "length": 200
+        },
+        "country": {
+          "@cds.persistence.name": "COUNTRY",
+          "type": "cds.String",
+          "length": 20
+        },
+        "LocationID": {
+          "@cds.persistence.name": "LOCATIONID",
+          "type": "cds.String",
+          "length": 3
+        },
+        "LocationName": {
+          "@cds.persistence.name": "LOCATIONNAME",
+          "type": "cds.String",
+          "length": 20
+        },
+        "postalCode": {
+          "@cds.persistence.name": "POSTALCODE",
+          "type": "cds.String"
+        },
+        "street": {
+          "@cds.persistence.name": "STREET",
+          "type": "cds.String",
+          "length": 300
+        },
+        "longitude": {
+          "@cds.persistence.name": "LONGITUDE",
+          "type": "cds.String"
+        },
+        "latitude": {
+          "@cds.persistence.name": "LATITUDE",
+          "type": "cds.String"
+        },
+        "geoLink": {
+          "@cds.persistence.name": "GEOLINK",
+          "type": "cds.String"
+        },
+        "portalLink": {
+          "@cds.persistence.name": "PORTALLINK",
+          "type": "cds.String"
+        }
+      }
+    },
+    "ns2.Consultants": {
+      "kind": "entity",
+      "@cds.persistence.name": "NS2_CONSULTANTS",
+      "elements": {
+        "email": {
+          "@cds.persistence.name": "EMAIL",
+          "key": true,
+          "type": "cds.String",
+          "length": 35
+        },
+        "firstName": {
+          "@cds.persistence.name": "FIRSTNAME",
+          "type": "cds.String",
+          "length": 20
+        },
+        "lastName": {
+          "@cds.persistence.name": "LASTNAME",
+          "type": "cds.String",
+          "length": 20
+        },
+        "SAPID": {
+          "@cds.persistence.name": "SAPID",
+          "type": "cds.String",
+          "length": 7
+        },
+        "mobile": {
+          "@cds.persistence.name": "MOBILE",
+          "type": "cds.Integer"
+        },
+        "department": {
+          "@cds.persistence.name": "DEPARTMENT",
+          "type": "cds.String",
+          "length": 50
+        },
+        "restricted": {
+          "@cds.persistence.name": "RESTRICTED",
+          "type": "cds.Boolean"
+        }
+      }
+    },
+    "ns2.Desks": {
+      "kind": "entity",
+      "@cds.persistence.name": "NS2_DESKS",
+      "elements": {
+        "deskID": {
+          "@cds.persistence.name": "DESKID",
+          "key": true,
+          "type": "cds.String",
+          "length": 15
+        },
+        "deskNum": {
+          "@cds.persistence.name": "DESKNUM",
+          "type": "cds.Integer"
+        },
+        "building": {
+          "@cds.persistence.name": "BUILDING",
+          "type": "cds.Association",
+          "target": "ns2.Buildings",
+          "keys": [
+            {
+              "ref": [
+                "buildingID"
+              ],
+              "$generatedFieldName": "building_buildingID"
+            }
+          ]
+        },
+        "floor": {
+          "@cds.persistence.name": "FLOOR",
+          "type": "cds.Integer"
+        },
+        "room": {
+          "@cds.persistence.name": "ROOM",
+          "type": "cds.String",
+          "length": 10
+        },
+        "resource": {
+          "@cds.persistence.name": "RESOURCE",
+          "type": "cds.Integer",
+          "default": {
+            "val": 1
+          }
+        },
+        "isHotdesk": {
+          "@cds.persistence.name": "ISHOTDESK",
+          "type": "cds.Boolean"
+        },
+        "nearWindow": {
+          "@cds.persistence.name": "NEARWINDOW",
+          "type": "cds.Boolean"
+        },
+        "nearKitchin": {
+          "@cds.persistence.name": "NEARKITCHIN",
+          "type": "cds.Boolean"
+        },
+        "nearEntrance": {
+          "@cds.persistence.name": "NEARENTRANCE",
+          "type": "cds.Boolean"
+        },
+        "isLiftable": {
+          "@cds.persistence.name": "ISLIFTABLE",
+          "type": "cds.Boolean"
+        },
+        "monitorNum": {
+          "@cds.persistence.name": "MONITORNUM",
+          "type": "cds.Integer"
+        },
+        "building_buildingID": {
+          "@cds.persistence.name": "BUILDING_BUILDINGID",
+          "@odata.foreignKey4": "building",
+          "type": "cds.String",
+          "length": 5
+        }
+      }
+    },
+    "ns2.Usages": {
+      "kind": "entity",
+      "@cds.persistence.name": "NS2_USAGES",
+      "includes": [
+        "cuid",
+        "managed"
+      ],
+      "elements": {
+        "ID": {
+          "@cds.persistence.name": "ID",
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@Common.Label": "{i18n>CreatedAt}",
+          "@Core.Computed": true,
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.persistence.name": "CREATEDAT",
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@Common.Label": "{i18n>CreatedBy}",
+          "@Core.Computed": true,
+          "@Core.Description": "{i18n>UserID.Description}",
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.persistence.name": "CREATEDBY",
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "@readonly": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@Common.Label": "{i18n>ChangedAt}",
+          "@Core.Computed": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@cds.persistence.name": "MODIFIEDAT",
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@Common.Label": "{i18n>ChangedBy}",
+          "@Core.Computed": true,
+          "@Core.Description": "{i18n>UserID.Description}",
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@cds.persistence.name": "MODIFIEDBY",
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "@readonly": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "consultant": {
+          "@cds.persistence.name": "CONSULTANT",
+          "type": "cds.Association",
+          "target": "ns2.Consultants",
+          "keys": [
+            {
+              "ref": [
+                "email"
+              ],
+              "$generatedFieldName": "consultant_email"
+            }
+          ]
+        },
+        "desk": {
+          "@cds.persistence.name": "DESK",
+          "type": "cds.Association",
+          "target": "ns2.Desks",
+          "keys": [
+            {
+              "ref": [
+                "deskID"
+              ],
+              "$generatedFieldName": "desk_deskID"
+            }
+          ]
+        },
+        "occupiedFrom": {
+          "@cds.persistence.name": "OCCUPIEDFROM",
+          "type": "cds.DateTime"
+        },
+        "occupiedTo": {
+          "@cds.persistence.name": "OCCUPIEDTO",
+          "type": "cds.DateTime"
+        },
+        "resource": {
+          "@cds.persistence.name": "RESOURCE",
+          "type": "cds.Integer",
+          "default": {
+            "val": 1
+          }
+        },
+        "consultant_email": {
+          "@cds.persistence.name": "CONSULTANT_EMAIL",
+          "@odata.foreignKey4": "consultant",
+          "type": "cds.String",
+          "length": 35
+        },
+        "desk_deskID": {
+          "@cds.persistence.name": "DESK_DESKID",
+          "@odata.foreignKey4": "desk",
+          "type": "cds.String",
+          "length": 15
+        }
+      }
+    },
     "sap.common": {
       "kind": "context"
     },
@@ -887,9 +1556,7 @@
       "kind": "type",
       "@UI.Identification": [
         {
-          "Value": {
-            "=": "name"
-          }
+          "=": "name"
         }
       ],
       "@cds.autoexpose": true,
@@ -918,9 +1585,7 @@
       "kind": "entity",
       "@UI.Identification": [
         {
-          "Value": {
-            "=": "name"
-          }
+          "=": "name"
         }
       ],
       "@cds.autoexpose": true,
@@ -1049,9 +1714,7 @@
       "kind": "entity",
       "@UI.Identification": [
         {
-          "Value": {
-            "=": "name"
-          }
+          "=": "name"
         }
       ],
       "@cds.autoexpose": true,
@@ -1186,9 +1849,7 @@
       "kind": "entity",
       "@UI.Identification": [
         {
-          "Value": {
-            "=": "name"
-          }
+          "=": "name"
         }
       ],
       "@cds.autoexpose": true,
@@ -1320,19 +1981,19 @@
         "validFrom": {
           "@cds.persistence.name": "VALIDFROM",
           "@cds.valid.from": true,
-          "type": "cds.Timestamp"
+          "type": "cds.DateTime"
         },
         "validTo": {
           "@cds.persistence.name": "VALIDTO",
           "@cds.valid.to": true,
-          "type": "cds.Timestamp"
+          "type": "cds.DateTime"
         }
       },
       "$syntax": "aspect"
     }
   },
   "meta": {
-    "creator": "CDS Compiler v1.26.2"
+    "creator": "CDS Compiler v1.29.0"
   },
   "$version": "1.0",
   "@sql_mapping": "plain"

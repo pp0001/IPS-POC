@@ -1,0 +1,37 @@
+﻿{
+  "format_version": 1,
+  "imports": [
+    {
+     "target_table": "NS2_DESKS", 
+      "column_mappings" : {
+        "DESKID":1,
+        "DESKNUM":2,
+        "BUILDING_BUILDINGID": 3,
+        "FLOOR": 4,
+        "ROOM": 5,
+        "RESOURCE": 6
+     },
+     "import_settings" : {
+       "import_columns" : [ 
+          "DESKID",
+	      "DESKNUM",
+	      "BUILDING_BUILDINGID",
+	      "FLOOR",
+	      "ROOM",
+	      "RESOURCE"
+        ]
+      },
+      "source_data": {
+        "data_type": "CSV",
+        "file_name": "Desks.csv",
+        "has_header": true,
+        "no_data_import": false,
+        "delete_existing_foreign_data": false
+      },
+      "dialect": "HANA",
+      "type_config": {
+        "delimiter": ","
+      }
+    }
+  ]
+}

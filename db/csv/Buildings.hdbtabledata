@@ -1,0 +1,47 @@
+﻿{
+  "format_version": 1,
+  "imports": [
+    {
+     "target_table": "NS2_BUILDINGS", 
+      "column_mappings" : {
+        "BUILDINGID":1,
+        "BUILDINGNAME":2,
+        "COUNTRY": 3,
+        "LOCATIONID": 4,
+        "LOCATIONNAME": 5,
+        "POSTALCODE": 6,
+        "STREET": 7,
+        "LONGITUDE": 8,
+        "LATITUDE": 9,
+        "GEOLINK": 10,
+        "PORTALLINK": 11
+     },
+     "import_settings" : {
+       "import_columns" : [ 
+          "BUILDINGID",
+          "BUILDINGNAME",
+          "COUNTRY",
+          "LOCATIONID",
+          "LOCATIONNAME",
+          "POSTALCODE",
+          "STREET",
+          "LONGITUDE",
+          "LATITUDE",
+          "GEOLINK",
+          "PORTALLINK"
+        ]
+      },
+      "source_data": {
+        "data_type": "CSV",
+        "file_name": "Buildings.csv",
+        "has_header": true,
+        "no_data_import": false,
+        "delete_existing_foreign_data": false
+      },
+      "dialect": "HANA",
+      "type_config": {
+        "delimiter": ","
+      }
+    }
+  ]
+}

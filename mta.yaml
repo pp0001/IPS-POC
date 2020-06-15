@@ -8,6 +8,7 @@ modules:
     parameters:
       memory: 256M
       disk-quota: 512M
+      buildpack: https://github.com/cloudfoundry/nodejs-buildpack.git#v1.6.42
     requires:
       - name: IPS_POC-db-hdi-container
       
@@ -16,6 +17,17 @@ modules:
     path: srv
     parameters:
       memory: 1024M
+    properties:
+      SPRING_PROFILES_ACTIVE: cloud
+      JBP_CONFIG_JAVA_OPTS:
+      - java_opts: '-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000 '
+      SAP_JWT_TRUST_ACL:
+      - clientid: '*'
+        identityzone: '*'
+    build-parameters:
+      ignore:
+      - '*.md'
+      build-result: target/*.jar
     provides:
       - name: srv_api
         properties:
@@ -23,8 +35,10 @@ modules:
     requires:
       - name: IPS_POC-db-hdi-container
         properties:
-          JBP_CONFIG_RESOURCE_CONFIGURATION: '[tomcat/webapps/ROOT/META-INF/context.xml:
-            {"service_name_for_DefaultDB" : "~{hdi-container-name}"}]'
+          db_service_instance_name: ~{hdi-container-name}
+#        properties:
+#          JBP_CONFIG_RESOURCE_CONFIGURATION: '[tomcat/webapps/ROOT/META-INF/context.xml:
+#            {"service_name_for_DefaultDB" : "~{hdi-container-name}"}]'
             
 resources:
   - name: IPS_POC-db-hdi-container
