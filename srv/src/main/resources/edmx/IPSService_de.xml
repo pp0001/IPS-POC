@@ -18,10 +18,20 @@
         <EntitySet Name="Building" EntityType="IPSService.Building"/>
         <EntitySet Name="Consultant" EntityType="IPSService.Consultant"/>
         <EntitySet Name="Desk" EntityType="IPSService.Desk"/>
+        <EntitySet Name="DeskMap" EntityType="IPSService.DeskMap"/>
+        <EntitySet Name="DetailtoMap" EntityType="IPSService.DetailtoMap"/>
         <EntitySet Name="Usage" EntityType="IPSService.Usage"/>
+        <EntitySet Name="UsagesView" EntityType="IPSService.UsagesView"/>
+        <FunctionImport Name="getEmailByUserId" ReturnType="IPSService.EmailByINumber" m:HttpMethod="GET">
+          <Parameter Name="iNumber" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
         <AssociationSet Name="Desk_building" Association="IPSService.Desk_building">
           <End Role="Desk" EntitySet="Desk"/>
           <End Role="Building" EntitySet="Building"/>
+        </AssociationSet>
+        <AssociationSet Name="DeskMap_desk" Association="IPSService.DeskMap_desk">
+          <End Role="DeskMap" EntitySet="DeskMap"/>
+          <End Role="Desk" EntitySet="Desk"/>
         </AssociationSet>
         <AssociationSet Name="Usage_consultant" Association="IPSService.Usage_consultant">
           <End Role="Usage" EntitySet="Usage"/>
@@ -29,6 +39,10 @@
         </AssociationSet>
         <AssociationSet Name="Usage_desk" Association="IPSService.Usage_desk">
           <End Role="Usage" EntitySet="Usage"/>
+          <End Role="Desk" EntitySet="Desk"/>
+        </AssociationSet>
+        <AssociationSet Name="UsagesView_desk" Association="IPSService.UsagesView_desk">
+          <End Role="UsagesView" EntitySet="UsagesView"/>
           <End Role="Desk" EntitySet="Desk"/>
         </AssociationSet>
       </EntityContainer>
@@ -76,7 +90,33 @@
         <Property Name="nearEntrance" Type="Edm.Boolean"/>
         <Property Name="isLiftable" Type="Edm.Boolean"/>
         <Property Name="monitorNum" Type="Edm.Int32"/>
+        <NavigationProperty Name="to_DeskMap" Relationship="IPSService.DeskMap_desk" FromRole="Desk" ToRole="DeskMap"/>
         <Property Name="building_buildingID" Type="Edm.String" MaxLength="5"/>
+      </EntityType>
+      <EntityType Name="DeskMap">
+        <Key>
+          <PropertyRef Name="desk_deskID"/>
+        </Key>
+        <NavigationProperty Name="desk" Relationship="IPSService.DeskMap_desk" FromRole="DeskMap" ToRole="Desk"/>
+        <Property Name="detailID" Type="Edm.String" MaxLength="30"/>
+        <Property Name="x" Type="Edm.String" MaxLength="10"/>
+        <Property Name="y" Type="Edm.String" MaxLength="10"/>
+        <Property Name="xMin" Type="Edm.String" MaxLength="10"/>
+        <Property Name="yMin" Type="Edm.String" MaxLength="10"/>
+        <Property Name="xMax" Type="Edm.String" MaxLength="10"/>
+        <Property Name="yMax" Type="Edm.String" MaxLength="10"/>
+        <Property Name="desk_deskID" Type="Edm.String" MaxLength="15" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="DetailtoMap">
+        <Key>
+          <PropertyRef Name="detailID"/>
+        </Key>
+        <Property Name="detailID" Type="Edm.String" MaxLength="30" Nullable="false"/>
+        <Property Name="mapID" Type="Edm.String" MaxLength="30"/>
+        <Property Name="xMin" Type="Edm.String" MaxLength="10"/>
+        <Property Name="yMin" Type="Edm.String" MaxLength="10"/>
+        <Property Name="xMax" Type="Edm.String" MaxLength="10"/>
+        <Property Name="yMax" Type="Edm.String" MaxLength="10"/>
       </EntityType>
       <EntityType Name="Usage">
         <Key>
@@ -95,6 +135,32 @@
         <Property Name="consultant_email" Type="Edm.String" MaxLength="35"/>
         <Property Name="desk_deskID" Type="Edm.String" MaxLength="15"/>
       </EntityType>
+      <EntityType Name="UsagesView">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="occupiedFrom" Type="Edm.DateTimeOffset"/>
+        <Property Name="occupiedTo" Type="Edm.DateTimeOffset"/>
+        <Property Name="resource" Type="Edm.Int32"/>
+        <Property Name="detailID" Type="Edm.String" MaxLength="30"/>
+        <Property Name="x" Type="Edm.String" MaxLength="10"/>
+        <Property Name="y" Type="Edm.String" MaxLength="10"/>
+        <Property Name="xMin" Type="Edm.String" MaxLength="10"/>
+        <Property Name="yMin" Type="Edm.String" MaxLength="10"/>
+        <Property Name="xMax" Type="Edm.String" MaxLength="10"/>
+        <Property Name="yMax" Type="Edm.String" MaxLength="10"/>
+        <Property Name="SAPID" Type="Edm.String" MaxLength="7"/>
+        <Property Name="department" Type="Edm.String" MaxLength="50"/>
+        <Property Name="email" Type="Edm.String" MaxLength="35"/>
+        <Property Name="firstName" Type="Edm.String" MaxLength="20"/>
+        <Property Name="consultant" Type="Edm.String" MaxLength="20"/>
+        <NavigationProperty Name="desk" Relationship="IPSService.UsagesView_desk" FromRole="UsagesView" ToRole="Desk"/>
+        <Property Name="desk_deskID" Type="Edm.String" MaxLength="15"/>
+      </EntityType>
+      <ComplexType Name="EmailByINumber">
+        <Property Name="email" Type="Edm.String"/>
+      </ComplexType>
       <Association Name="Desk_building">
         <End Role="Desk" Type="IPSService.Desk" Multiplicity="*"/>
         <End Role="Building" Type="IPSService.Building" Multiplicity="0..1"/>
@@ -104,6 +170,18 @@
           </Principal>
           <Dependent Role="Desk">
             <PropertyRef Name="building_buildingID"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="DeskMap_desk">
+        <End Role="DeskMap" Type="IPSService.DeskMap" Multiplicity="*"/>
+        <End Role="Desk" Type="IPSService.Desk" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="Desk">
+            <PropertyRef Name="deskID"/>
+          </Principal>
+          <Dependent Role="DeskMap">
+            <PropertyRef Name="desk_deskID"/>
           </Dependent>
         </ReferentialConstraint>
       </Association>
@@ -127,6 +205,18 @@
             <PropertyRef Name="deskID"/>
           </Principal>
           <Dependent Role="Usage">
+            <PropertyRef Name="desk_deskID"/>
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="UsagesView_desk">
+        <End Role="UsagesView" Type="IPSService.UsagesView" Multiplicity="*"/>
+        <End Role="Desk" Type="IPSService.Desk" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="Desk">
+            <PropertyRef Name="deskID"/>
+          </Principal>
+          <Dependent Role="UsagesView">
             <PropertyRef Name="desk_deskID"/>
           </Dependent>
         </ReferentialConstraint>
@@ -182,6 +272,40 @@
           </Record>
         </Annotation>
       </Annotations>
+      <Annotations Target="IPSService.EntityContainer/DeskMap" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="IPSService.EntityContainer/DetailtoMap" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
+      </Annotations>
       <Annotations Target="IPSService.Usage/createdAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
         <Annotation Term="Common.Label" String="Angelegt am"/>
         <Annotation Term="Core.Computed" Bool="true"/>
@@ -205,6 +329,23 @@
         <Annotation Term="Core.Computed" Bool="true"/>
         <Annotation Term="Core.Description" String="Die eindeutige ID eines Benutzers"/>
         <Annotation Term="UI.HiddenFilter" Bool="true"/>
+      </Annotations>
+      <Annotations Target="IPSService.EntityContainer/UsagesView" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
       </Annotations>
     </Schema>
   </edmx:DataServices>

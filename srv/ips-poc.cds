@@ -5,4 +5,11 @@ service IPSService {
 	entity Desk 		@readonly as projection on ns2.Desks;
 	entity Consultant 	@readonly as projection on ns2.Consultants;
 	entity Usage 				  as projection on ns2.Usages;
+	entity DeskMap		@readonly as projection on ns2.DeskMap;
+	entity DetailtoMap	@readonly as projection on ns2.DetailtoMap;
+	entity UsagesView   @readonly as projection on ns2.UsagesView;
+	type EmailByINumber {
+		email: String;
+	};
+	function getEmailByUserId(iNumber: String) returns EmailByINumber;
 }

@@ -1,0 +1,37 @@
+﻿{
+  "format_version": 1,
+  "imports": [
+    {
+     "target_table": "NS2_DETAILTOMAP", 
+      "column_mappings" : {
+        "DETAILID":1,
+        "MAPID":2,
+        "XMIN": 3,
+        "YMIN": 4,
+        "XMAX": 5,
+        "YMAX": 6
+     },
+     "import_settings" : {
+       "import_columns" : [ 
+          "DETAILID",
+	      "MAPID",
+	      "XMIN",
+	      "YMIN",
+	      "XMAX",
+	      "YMAX"
+        ]
+      },
+      "source_data": {
+        "data_type": "CSV",
+        "file_name": "DetailToMap.csv",
+        "has_header": true,
+        "no_data_import": false,
+        "delete_existing_foreign_data": false
+      },
+      "dialect": "HANA",
+      "type_config": {
+        "delimiter": ","
+      }
+    }
+  ]
+}

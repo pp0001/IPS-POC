@@ -1,0 +1,41 @@
+﻿{
+  "format_version": 1,
+  "imports": [
+    {
+     "target_table": "NS2_DESKMAP", 
+      "column_mappings" : {
+        "DESK_DESKID":1,
+        "DETAILID":2,
+        "X": 3,
+        "Y": 4,
+        "XMIN": 5,
+        "YMIN": 6,
+        "XMAX": 7,
+        "YMAX": 8
+     },
+     "import_settings" : {
+       "import_columns" : [ 
+          "DESK_DESKID",
+	      "DETAILID",
+	      "X",
+	      "Y",
+	      "XMIN",
+	      "YMIN",
+	      "XMAX",
+	      "YMAX"
+        ]
+      },
+      "source_data": {
+        "data_type": "CSV",
+        "file_name": "DeskMap.csv",
+        "has_header": true,
+        "no_data_import": false,
+        "delete_existing_foreign_data": false
+      },
+      "dialect": "HANA",
+      "type_config": {
+        "delimiter": ","
+      }
+    }
+  ]
+}

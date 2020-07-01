@@ -37,7 +37,9 @@ entity Desks {
 	nearKitchin		: Boolean;
 	nearEntrance	: Boolean;						
 	isLiftable		: Boolean;
-	monitorNum		: Integer						//number of monitors
+	monitorNum		: Integer;						//number of monitors
+	
+	to_DeskMap		: Association to DeskMap on to_DeskMap.desk = $self
 }
 
 entity Usages : cuid, managed {
@@ -47,3 +49,45 @@ entity Usages : cuid, managed {
     occupiedTo      : DateTime;
     resource        : Integer default 1;            //for extensibility
 }
+
+entity DeskMap {
+	key desk      	: Association to Desks;
+	detailID 		: String(30);
+	x				: String(10);
+	y				: String(10);
+	xMin			: String(10);
+	yMin			: String(10);
+	xMax			: String(10);
+	yMax			: String(10);
+}
+
+entity DetailtoMap {
+	key detailID	:String(30);
+	mapID			:String(30); 
+	xMin			: String(10);
+	yMin			: String(10);
+	xMax			: String(10);
+	yMax			: String(10);
+}
+
+view UsagesView as select from Usages as u
+{
+	Key ID,
+	occupiedFrom,
+	occupiedTo,
+	resource,
+	u.desk.to_DeskMap.detailID,
+	u.desk.to_DeskMap.x,
+	u.desk.to_DeskMap.y,
+	u.desk.to_DeskMap.xMin,
+	u.desk.to_DeskMap.yMin,
+	u.desk.to_DeskMap.xMax,
+	u.desk.to_DeskMap.yMax,
+	consultant.SAPID,
+	consultant.department,
+	consultant.email,
+	consultant.firstName,
+	consultant.lastName
+	consultant,
+	desk
+};
