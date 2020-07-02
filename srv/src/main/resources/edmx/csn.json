@@ -243,7 +243,7 @@
         "to_DeskMap": {
           "@cds.persistence.name": "TO_DESKMAP",
           "type": "cds.Association",
-          "target": "IPSService.DeskMap",
+          "target": "ns2.DeskMap",
           "on": [
             {
               "ref": [
@@ -333,6 +333,90 @@
           "@cds.persistence.name": "YMAX",
           "type": "cds.String",
           "length": 10
+        },
+        "desk_deskID": {
+          "@cds.persistence.name": "DESK_DESKID",
+          "@odata.foreignKey4": "desk",
+          "key": true,
+          "type": "cds.String",
+          "length": 15
+        }
+      },
+      "$syntax": "projection"
+    },
+    "IPSService.DeskMapView": {
+      "kind": "entity",
+      "@Capabilities.DeleteRestrictions.Deletable": false,
+      "@Capabilities.InsertRestrictions.Insertable": false,
+      "@Capabilities.UpdateRestrictions.Updatable": false,
+      "@cds.persistence.name": "IPSSERVICE_DESKMAPVIEW",
+      "@readonly": true,
+      "query": {
+        "SELECT": {
+          "from": {
+            "ref": [
+              "ns2.DeskMapView"
+            ]
+          }
+        }
+      },
+      "elements": {
+        "desk": {
+          "@cds.persistence.name": "DESK",
+          "key": true,
+          "type": "cds.Association",
+          "target": "IPSService.Desk",
+          "keys": [
+            {
+              "ref": [
+                "deskID"
+              ],
+              "$generatedFieldName": "desk_deskID"
+            }
+          ]
+        },
+        "detailID": {
+          "@cds.persistence.name": "DETAILID",
+          "type": "cds.String",
+          "length": 30
+        },
+        "x": {
+          "@cds.persistence.name": "X",
+          "type": "cds.String",
+          "length": 10
+        },
+        "y": {
+          "@cds.persistence.name": "Y",
+          "type": "cds.String",
+          "length": 10
+        },
+        "xMin": {
+          "@cds.persistence.name": "XMIN",
+          "type": "cds.String",
+          "length": 10
+        },
+        "yMin": {
+          "@cds.persistence.name": "YMIN",
+          "type": "cds.String",
+          "length": 10
+        },
+        "xMax": {
+          "@cds.persistence.name": "XMAX",
+          "type": "cds.String",
+          "length": 10
+        },
+        "yMax": {
+          "@cds.persistence.name": "YMAX",
+          "type": "cds.String",
+          "length": 10
+        },
+        "isHotdesk": {
+          "@cds.persistence.name": "ISHOTDESK",
+          "type": "cds.Boolean"
+        },
+        "isLiftable": {
+          "@cds.persistence.name": "ISLIFTABLE",
+          "type": "cds.Boolean"
         },
         "desk_deskID": {
           "@cds.persistence.name": "DESK_DESKID",
@@ -1384,6 +1468,102 @@
           "length": 15
         }
       }
+    },
+    "ns2.DeskMapView": {
+      "kind": "entity",
+      "@cds.persistence.name": "NS2_DESKMAPVIEW",
+      "query": {
+        "SELECT": {
+          "from": {
+            "ref": [
+              "ns2.DeskMap"
+            ],
+            "as": "dm"
+          },
+          "columns": [
+            "*",
+            {
+              "ref": [
+                "desk",
+                "isHotdesk"
+              ]
+            },
+            {
+              "ref": [
+                "desk",
+                "isLiftable"
+              ]
+            }
+          ]
+        }
+      },
+      "elements": {
+        "desk": {
+          "@cds.persistence.name": "DESK",
+          "key": true,
+          "type": "cds.Association",
+          "target": "ns2.Desks",
+          "keys": [
+            {
+              "ref": [
+                "deskID"
+              ],
+              "$generatedFieldName": "desk_deskID"
+            }
+          ]
+        },
+        "detailID": {
+          "@cds.persistence.name": "DETAILID",
+          "type": "cds.String",
+          "length": 30
+        },
+        "x": {
+          "@cds.persistence.name": "X",
+          "type": "cds.String",
+          "length": 10
+        },
+        "y": {
+          "@cds.persistence.name": "Y",
+          "type": "cds.String",
+          "length": 10
+        },
+        "xMin": {
+          "@cds.persistence.name": "XMIN",
+          "type": "cds.String",
+          "length": 10
+        },
+        "yMin": {
+          "@cds.persistence.name": "YMIN",
+          "type": "cds.String",
+          "length": 10
+        },
+        "xMax": {
+          "@cds.persistence.name": "XMAX",
+          "type": "cds.String",
+          "length": 10
+        },
+        "yMax": {
+          "@cds.persistence.name": "YMAX",
+          "type": "cds.String",
+          "length": 10
+        },
+        "isHotdesk": {
+          "@cds.persistence.name": "ISHOTDESK",
+          "type": "cds.Boolean"
+        },
+        "isLiftable": {
+          "@cds.persistence.name": "ISLIFTABLE",
+          "type": "cds.Boolean"
+        },
+        "desk_deskID": {
+          "@cds.persistence.name": "DESK_DESKID",
+          "@odata.foreignKey4": "desk",
+          "key": true,
+          "type": "cds.String",
+          "length": 15
+        }
+      },
+      "$syntax": "view"
     },
     "ns2.Desks": {
       "kind": "entity",

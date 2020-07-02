@@ -70,6 +70,13 @@ entity DetailtoMap {
 	yMax			: String(10);
 }
 
+view DeskMapView as select from DeskMap as dm
+{
+	*,
+	desk.isHotdesk,
+	desk.isLiftable
+};
+
 view UsagesView as select from Usages as u
 {
 	Key ID,
