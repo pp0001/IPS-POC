@@ -163,6 +163,7 @@
         <Property Name="occupiedFrom" Type="Edm.DateTimeOffset"/>
         <Property Name="occupiedTo" Type="Edm.DateTimeOffset"/>
         <Property Name="resource" Type="Edm.Int32"/>
+        <Property Name="isHotdesk" Type="Edm.Boolean"/>
         <Property Name="detailID" Type="Edm.String" MaxLength="30"/>
         <Property Name="x" Type="Edm.String" MaxLength="10"/>
         <Property Name="y" Type="Edm.String" MaxLength="10"/>

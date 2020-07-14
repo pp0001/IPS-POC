@@ -83,6 +83,7 @@ view UsagesView as select from Usages as u
 	occupiedFrom,
 	occupiedTo,
 	resource,
+	u.desk.isHotdesk,
 	u.desk.to_DeskMap.detailID,
 	u.desk.to_DeskMap.x,
 	u.desk.to_DeskMap.y,

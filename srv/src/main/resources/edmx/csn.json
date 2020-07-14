@@ -668,6 +668,10 @@
             "val": 1
           }
         },
+        "isHotdesk": {
+          "@cds.persistence.name": "ISHOTDESK",
+          "type": "cds.Boolean"
+        },
         "detailID": {
           "@cds.persistence.name": "DETAILID",
           "type": "cds.String",
@@ -1869,6 +1873,13 @@
               "ref": [
                 "u",
                 "desk",
+                "isHotdesk"
+              ]
+            },
+            {
+              "ref": [
+                "u",
+                "desk",
                 "to_DeskMap",
                 "detailID"
               ]
@@ -1980,6 +1991,10 @@
           "default": {
             "val": 1
           }
+        },
+        "isHotdesk": {
+          "@cds.persistence.name": "ISHOTDESK",
+          "type": "cds.Boolean"
         },
         "detailID": {
           "@cds.persistence.name": "DETAILID",
