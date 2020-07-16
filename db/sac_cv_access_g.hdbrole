@@ -1,0 +1,10 @@
+{ 
+  "role": { 
+    "name": "sac_cv_access_g#", 
+	"schema_privileges": [
+		{
+			"privileges": ["SELECT"]
+		}
+		]
+  }
+} 
