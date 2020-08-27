@@ -1,4 +1,4 @@
-# IPA-POC Backend Service Project
+# IPS-POC Backend Service Project
 
 Project repository: https://github.com/pp0001/IPS-POC  
 
