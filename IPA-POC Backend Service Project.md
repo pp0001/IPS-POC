@@ -4,6 +4,12 @@ Project repository: https://github.com/pp0001/IPS-POC
 
 ### Project Structure
 
+#### Create a CAP Project in WEBIDE
+
+new project with Template "*SAP Cloud Business Application*", following wizard input need information. After that you will get the project with the structure shown below. 
+
+[CAP Model Link](https://cap.cloud.sap/docs/about/) 
+
 <img src="./img/Project Structure.png" alt="Project Structure" align="Left" style="zoom:50%;" />
 
 `/db` : Setup database model & mocked master data  
@@ -117,6 +123,18 @@ Open our Cloud Foundry account, checked IPS_POC Application is working.
 1. Open WEBIDE -> setting -> Cloud Foundry -> setup correct endpoint according our cloud foundry environment  
 2. Enable database explorer  
 3. Click database explorer -> click add database -> select “IPS_POC-db-hdi-container”    
+
+### Run Project in WEBIDE
+
+1. clone project to WEBIDE
+
+2. build CDS 
+
+   <img src="./img/Build CDS in WEBIDE.png" alt="Build CDS" align="Left" style="zoom:50%;"/>
+
+3. run JAVA application
+
+   <img src="./img/Run Jave Application in WEBIDE.png" alt="Run application" align="Left" style="zoom:50%;" />
 
 ### Run Project Locally
 
