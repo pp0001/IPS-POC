@@ -42,12 +42,32 @@ entity Desks {
 	to_DeskMap		: Association to DeskMap on to_DeskMap.desk = $self
 }
 
-entity Usages : cuid, managed {
+entity Usages : cuid {
     consultant      : Association to Consultants;	//consultant_email
     desk	        : Association to Desks;			//desk_deskID
     occupiedFrom    : DateTime;
     occupiedTo      : DateTime;
     resource        : Integer default 1;            //for extensibility
+    
+    @UI.HiddenFilter
+	@UI.Hidden
+	@odata.on.update: #now
+	modifiedAt: Timestamp;
+	
+	@UI.HiddenFilter
+	@UI.Hidden
+	@odata.on.insert: #now
+	createdAt: Timestamp;
+	
+	@UI.HiddenFilter
+	@UI.Hidden
+	@odata.on.insert: #user
+	createdBy: String;
+	
+	@UI.HiddenFilter
+	@UI.Hidden
+	@odata.on.update: #user
+	modifiedBy: String;
 }
 
 entity DeskMap {
